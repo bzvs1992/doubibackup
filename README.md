@@ -8,7 +8,7 @@
 * [***代理相关***](#代理相关)
   * [ss-go.sh](#ss_gosh)
   * [ssr.sh](#ssrsh)
-  * [ssrmu.sh(修改版)](#ssrmush)
+  * [ssrmu.sh(修改版)](#ssrmush(修改版))
   * [brook.sh](#brooksh)
   * [goflyway.sh](#goflywaysh)
   * [daze.sh](#dazesh)
