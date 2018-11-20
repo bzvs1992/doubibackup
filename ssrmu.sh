@@ -399,8 +399,8 @@ Set_config_port(){
 }
 Set_config_password(){
 	echo "请输入要设置的用户 密码"
-	read -e -p "(默认: 713b6110-c32e-43d9-be9b-ab11d9966170):" ssr_password
-	[[ -z "${ssr_password}" ]] && ssr_password="713b6110-c32e-43d9-be9b-ab11d9966170"
+	read -e -p "(默认: 2Nr$Ud3YS8kNUfg[):" ssr_password
+	[[ -z "${ssr_password}" ]] && ssr_password="2Nr$Ud3YS8kNUfg["
 	echo && echo ${Separator_1} && echo -e "	密码 : ${Green_font_prefix}${ssr_password}${Font_color_suffix}" && echo ${Separator_1} && echo
 }
 Set_config_method(){
@@ -998,7 +998,7 @@ Uninstall_SSR(){
 Check_Libsodium_ver(){
 	echo -e "${Info} 开始获取 libsodium 最新版本..."
 	Libsodiumr_ver=$(wget -qO- "https://github.com/ichenxin/libsodium/tags"|grep "/ichenxin/libsodium/releases/tag/"|head -1|sed -r 's/.*tag\/(.+)\">.*/\1/')
-	[[ -z ${Libsodiumr_ver} ]] && Libsodiumr_ver=${Libsodiumr_ver_backup}
+	[[ -z ${Libsodiumr_ver} ]] && Libsodiumr_ver=${r_ver_backup}
 	echo -e "${Info} libsodium 最新版本为 ${Green_font_prefix}${Libsodiumr_ver}${Font_color_suffix} !"
 }
 Install_Libsodium(){
