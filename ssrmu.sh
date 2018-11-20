@@ -399,8 +399,8 @@ Set_config_port(){
 }
 Set_config_password(){
 	echo "请输入要设置的用户 密码"
-	read -e -p "(默认: 2Nr$Ud3YS8kNUfg[):" ssr_password
-	[[ -z "${ssr_password}" ]] && ssr_password="2Nr$Ud3YS8kNUfg["
+	read -e -p "(默认: [41JJ.pqI7/;.7T6F>):" ssr_password
+	[[ -z "${ssr_password}" ]] && ssr_password="[41JJ.pqI7/;.7T6F>"
 	echo && echo ${Separator_1} && echo -e "	密码 : ${Green_font_prefix}${ssr_password}${Font_color_suffix}" && echo ${Separator_1} && echo
 }
 Set_config_method(){
