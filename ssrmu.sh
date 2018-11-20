@@ -72,7 +72,7 @@ BBR_installation_status(){
 	if [[ ! -e ${BBR_file} ]]; then
 		echo -e "${Error} 没有发现 BBR脚本，开始下载..."
 		cd "${file}"
-		if ! wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/bbr.sh; then
+		if ! wget -N --no-check-certificate https://raw.githubusercontent.com/ichenxin/doubibackup/master/bbr.sh; then
 			echo -e "${Error} BBR 脚本下载失败 !" && exit 1
 		else
 			echo -e "${Info} BBR 脚本下载完成 !"
@@ -373,8 +373,8 @@ View_User_info(){
 # 设置 配置信息
 Set_config_user(){
 	echo "请输入要设置的用户 用户名(请勿重复, 用于区分, 不支持中文、空格, 会报错 !)"
-	read -e -p "(默认: doubi):" ssr_user
-	[[ -z "${ssr_user}" ]] && ssr_user="doubi"
+	read -e -p "(默认: chen):" ssr_user
+	[[ -z "${ssr_user}" ]] && ssr_user="chen"
 	ssr_user=$(echo "${ssr_user}"|sed 's/ //g')
 	echo && echo ${Separator_1} && echo -e "	用户名 : ${Green_font_prefix}${ssr_user}${Font_color_suffix}" && echo ${Separator_1} && echo
 }
@@ -382,8 +382,8 @@ Set_config_port(){
 	while true
 	do
 	echo -e "请输入要设置的用户 端口(请勿重复, 用于区分)"
-	read -e -p "(默认: 2333):" ssr_port
-	[[ -z "$ssr_port" ]] && ssr_port="2333"
+	read -e -p "(默认: 3000):" ssr_port
+	[[ -z "$ssr_port" ]] && ssr_port="3000"
 	echo $((${ssr_port}+0)) &>/dev/null
 	if [[ $? == 0 ]]; then
 		if [[ ${ssr_port} -ge 1 ]] && [[ ${ssr_port} -le 65535 ]]; then
@@ -399,8 +399,8 @@ Set_config_port(){
 }
 Set_config_password(){
 	echo "请输入要设置的用户 密码"
-	read -e -p "(默认: doub.io):" ssr_password
-	[[ -z "${ssr_password}" ]] && ssr_password="doub.io"
+	read -e -p "(默认: 713b6110-c32e-43d9-be9b-ab11d9966170):" ssr_password
+	[[ -z "${ssr_password}" ]] && ssr_password="713b6110-c32e-43d9-be9b-ab11d9966170"
 	echo && echo ${Separator_1} && echo -e "	密码 : ${Green_font_prefix}${ssr_password}${Font_color_suffix}" && echo ${Separator_1} && echo
 }
 Set_config_method(){
@@ -429,8 +429,8 @@ Set_config_method(){
  ${Green_font_prefix}15.${Font_color_suffix} chacha20
  ${Green_font_prefix}16.${Font_color_suffix} chacha20-ietf
  ${Tip} salsa20/chacha20-*系列加密方式，需要额外安装依赖 libsodium ，否则会无法启动ShadowsocksR !" && echo
-	read -e -p "(默认: 5. aes-128-ctr):" ssr_method
-	[[ -z "${ssr_method}" ]] && ssr_method="5"
+	read -e -p "(默认: 15. chacha20):" ssr_method
+	[[ -z "${ssr_method}" ]] && ssr_method="15"
 	if [[ ${ssr_method} == "1" ]]; then
 		ssr_method="none"
 	elif [[ ${ssr_method} == "2" ]]; then
@@ -853,9 +853,9 @@ Debian_apt(){
 # 下载 ShadowsocksR
 Download_SSR(){
 	cd "/usr/local"
-	wget -N --no-check-certificate "https://github.com/ToyoDAdoubi/shadowsocksr/archive/manyuser.zip"
+	wget -N --no-check-certificate "https://github.com/ichenxin/shadowsocksr/archive/manyuser.zip"
 	#git config --global http.sslVerify false
-	#env GIT_SSL_NO_VERIFY=true git clone -b manyuser https://github.com/ToyoDAdoubi/shadowsocksr.git
+	#env GIT_SSL_NO_VERIFY=true git clone -b manyuser https://github.com/ichenxin/shadowsocksr.git
 	#[[ ! -e ${ssr_folder} ]] && echo -e "${Error} ShadowsocksR服务端 下载失败 !" && exit 1
 	[[ ! -e "manyuser.zip" ]] && echo -e "${Error} ShadowsocksR服务端 压缩包 下载失败 !" && rm -rf manyuser.zip && exit 1
 	unzip "manyuser.zip"
@@ -877,14 +877,14 @@ Download_SSR(){
 }
 Service_SSR(){
 	if [[ ${release} = "centos" ]]; then
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/ssrmu_centos -O /etc/init.d/ssrmu; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/ichenxin/doubibackup/master/service/ssrmu_centos -O /etc/init.d/ssrmu; then
 			echo -e "${Error} ShadowsocksR服务 管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/ssrmu
 		chkconfig --add ssrmu
 		chkconfig ssrmu on
 	else
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/ssrmu_debian -O /etc/init.d/ssrmu; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/ichenxin/doubibackup/master/service/ssrmu_debian -O /etc/init.d/ssrmu; then
 			echo -e "${Error} ShadowsocksR服务 管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/ssrmu
@@ -898,10 +898,10 @@ JQ_install(){
 		cd "${ssr_folder}"
 		if [[ ${bit} = "x86_64" ]]; then
 			mv "jq-linux64" "jq"
-			#wget --no-check-certificate "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -O ${jq_file}
+			#wget --no-check-certificate "https://github.com/ichenxin/jq/releases/download/jq-1.5/jq-linux64" -O ${jq_file}
 		else
 			mv "jq-linux32" "jq"
-			#wget --no-check-certificate "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux32" -O ${jq_file}
+			#wget --no-check-certificate "https://github.com/ichenxin/jq/releases/download/jq-1.5/jq-linux32" -O ${jq_file}
 		fi
 		[[ ! -e ${jq_file} ]] && echo -e "${Error} JQ解析器 重命名失败，请检查 !" && exit 1
 		chmod +x ${jq_file}
@@ -997,7 +997,7 @@ Uninstall_SSR(){
 }
 Check_Libsodium_ver(){
 	echo -e "${Info} 开始获取 libsodium 最新版本..."
-	Libsodiumr_ver=$(wget -qO- "https://github.com/jedisct1/libsodium/tags"|grep "/jedisct1/libsodium/releases/tag/"|head -1|sed -r 's/.*tag\/(.+)\">.*/\1/')
+	Libsodiumr_ver=$(wget -qO- "https://github.com/ichenxin/libsodium/tags"|grep "/ichenxin/libsodium/releases/tag/"|head -1|sed -r 's/.*tag\/(.+)\">.*/\1/')
 	[[ -z ${Libsodiumr_ver} ]] && Libsodiumr_ver=${Libsodiumr_ver_backup}
 	echo -e "${Info} libsodium 最新版本为 ${Green_font_prefix}${Libsodiumr_ver}${Font_color_suffix} !"
 }
@@ -1018,7 +1018,7 @@ Install_Libsodium(){
 		echo -e "${Info} 安装依赖..."
 		yum -y groupinstall "Development Tools"
 		echo -e "${Info} 下载..."
-		wget  --no-check-certificate -N "https://github.com/jedisct1/libsodium/releases/download/${Libsodiumr_ver}/libsodium-${Libsodiumr_ver}.tar.gz"
+		wget  --no-check-certificate -N "https://github.com/ichenxin/libsodium/releases/download/${Libsodiumr_ver}/libsodium-${Libsodiumr_ver}.tar.gz"
 		echo -e "${Info} 解压..."
 		tar -xzf libsodium-${Libsodiumr_ver}.tar.gz && cd libsodium-${Libsodiumr_ver}
 		echo -e "${Info} 编译安装..."
@@ -1029,7 +1029,7 @@ Install_Libsodium(){
 		echo -e "${Info} 安装依赖..."
 		apt-get install -y build-essential
 		echo -e "${Info} 下载..."
-		wget  --no-check-certificate -N "https://github.com/jedisct1/libsodium/releases/download/${Libsodiumr_ver}/libsodium-${Libsodiumr_ver}.tar.gz"
+		wget  --no-check-certificate -N "https://github.com/ichenxin/libsodium/releases/download/${Libsodiumr_ver}/libsodium-${Libsodiumr_ver}.tar.gz"
 		echo -e "${Info} 解压..."
 		tar -xzf libsodium-${Libsodiumr_ver}.tar.gz && cd libsodium-${Libsodiumr_ver}
 		echo -e "${Info} 编译安装..."
@@ -1271,7 +1271,7 @@ Add_port_user(){
 				echo -e "${Info} 用户添加成功 ${Green_font_prefix}[用户名: ${ssr_user} , 端口: ${ssr_port}]${Font_color_suffix} "
 				echo
 				read -e -p "是否继续 添加用户配置？[Y/n]:" addyn
-				[[ -z ${addyn} ]] && addyn="y"
+				[[ -z ${addyn} ]] && addyn="n"
 				if [[ ${addyn} == [Nn] ]]; then
 					Get_User_info "${ssr_port}"
 					View_User_info
@@ -1496,7 +1496,7 @@ Configure_Server_Speeder(){
 Install_ServerSpeeder(){
 	[[ -e ${Server_Speeder_file} ]] && echo -e "${Error} 锐速(Server Speeder) 已安装 !" && exit 1
 	#借用91yun.rog的开心版锐速
-	wget --no-check-certificate -qO /tmp/serverspeeder.sh https://raw.githubusercontent.com/91yun/serverspeeder/master/serverspeeder.sh
+	wget --no-check-certificate -qO /tmp/serverspeeder.sh https://raw.githubusercontent.com/ichenxin/serverspeeder/master/serverspeeder.sh
 	[[ ! -e "/tmp/serverspeeder.sh" ]] && echo -e "${Error} 锐速安装脚本下载失败 !" && exit 1
 	bash /tmp/serverspeeder.sh
 	sleep 2s
@@ -1559,8 +1559,8 @@ Configure_LotServer(){
 }
 Install_LotServer(){
 	[[ -e ${LotServer_file} ]] && echo -e "${Error} LotServer 已安装 !" && exit 1
-	#Github: https://github.com/0oVicero0/serverSpeeder_Install
-	wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh"
+	#Github: https://github.com/ichenxin/serverSpeeder_Install
+	wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com/ichenxin/serverSpeeder_Install/master/appex.sh"
 	[[ ! -e "/tmp/appex.sh" ]] && echo -e "${Error} LotServer 安装脚本下载失败 !" && exit 1
 	bash /tmp/appex.sh 'install'
 	sleep 2s
@@ -1576,7 +1576,7 @@ Uninstall_LotServer(){
 	read -e -p "(默认: n):" unyn
 	[[ -z ${unyn} ]] && echo && echo "已取消..." && exit 1
 	if [[ ${unyn} == [Yy] ]]; then
-		wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh" && bash /tmp/appex.sh 'uninstall'
+		wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com/ichenxin/serverSpeeder_Install/master/appex.sh" && bash /tmp/appex.sh 'uninstall'
 		echo && echo "LotServer 卸载完成 !" && echo
 	fi
 }
@@ -1663,12 +1663,12 @@ Other_functions(){
 }
 # 封禁 BT PT SPAM
 BanBTPTSPAM(){
-	wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ban_iptables.sh && chmod +x ban_iptables.sh && bash ban_iptables.sh banall
+	wget -N --no-check-certificate https://raw.githubusercontent.com/ichenxin/doubibackup/master/ban_iptables.sh && chmod +x ban_iptables.sh && bash ban_iptables.sh banall
 	rm -rf ban_iptables.sh
 }
 # 解封 BT PT SPAM
 UnBanBTPTSPAM(){
-	wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ban_iptables.sh && chmod +x ban_iptables.sh && bash ban_iptables.sh unbanall
+	wget -N --no-check-certificate https://raw.githubusercontent.com/ichenxin/doubibackup/master/ban_iptables.sh && chmod +x ban_iptables.sh && bash ban_iptables.sh unbanall
 	rm -rf ban_iptables.sh
 }
 Set_config_connect_verbose_info(){
@@ -1769,14 +1769,14 @@ crontab_monitor_ssr_cron_stop(){
 	fi
 }
 Update_Shell(){
-	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/ichenxin/doubibackup/master/ssrmu.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
 	if [[ -e "/etc/init.d/ssrmu" ]]; then
 		rm -rf /etc/init.d/ssrmu
 		Service_SSR
 	fi
 	cd "${file}"
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh" && chmod +x ssrmu.sh
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/ichenxin/doubibackup/master/ssrmu.sh" && chmod +x ssrmu.sh
 	echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 # 显示 菜单状态
